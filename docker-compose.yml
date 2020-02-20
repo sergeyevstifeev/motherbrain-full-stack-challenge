@@ -1,0 +1,21 @@
+version: '3.7'
+services:
+  backend:
+    image: motherbrain-full-stack-challenge/backend:latest
+    build: backend
+    volumes:
+      - ./backend:/backend
+    ports:
+      - 8080:8080
+    environment:
+      ES_URL: ${ES_URL}
+    command: ["yarn", "dev"]
+
+  frontend:
+    image: motherbrain-full-stack-challenge/frontend:latest
+    build: frontend
+    volumes:
+      - ./frontend:/frontend
+    ports:
+      - 3000:3000
+    command: ["yarn", "start"]
