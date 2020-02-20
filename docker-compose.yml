@@ -1,10 +1,11 @@
-version: '3.7'
+version: '3.3'
 services:
   backend:
     image: motherbrain-full-stack-challenge/backend:latest
     build: backend
     volumes:
       - ./backend:/backend
+      - /backend/node_modules
     ports:
       - 8080:8080
     environment:
@@ -16,6 +17,7 @@ services:
     build: frontend
     volumes:
       - ./frontend:/frontend
+      - /frontend/node_modules
     ports:
       - 3000:3000
     command: ["yarn", "start"]
