@@ -51,8 +51,9 @@ export default function App() {
       <p>
         We want you to{" "}
         <strong>
-          explore and visualize this data in the most fun and creative way that
-          you can!
+          explore and create a chart or graph of any aspect of the data. Use any
+          charting library you want or whip something up yourself if you prefer
+          that. Points for creativity, both in aesthetics and in data analysis.
         </strong>
       </p>
 
