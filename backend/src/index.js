@@ -1,9 +1,10 @@
+require("dotenv").config();
 const http = require("http");
 const { URL } = require("url");
 const { Client } = require("@elastic/elasticsearch");
 
 const client = new Client({
-  node: process.env.ES_URL
+  node: process.env.ES_URL,
 });
 
 http.createServer(handle).listen(8080);
@@ -18,7 +19,7 @@ async function handle(req, res) {
         res.writeHead(200).end(
           JSON.stringify({
             message: "OK",
-            results: await searchOrgs(url.searchParams)
+            results: await searchOrgs(url.searchParams),
           })
         );
         break;
@@ -27,7 +28,7 @@ async function handle(req, res) {
         res.writeHead(200).end(
           JSON.stringify({
             message: "OK",
-            results: await searchFundings(url.searchParams)
+            results: await searchFundings(url.searchParams),
           })
         );
         break;
@@ -35,7 +36,7 @@ async function handle(req, res) {
       default:
         res.writeHead(404).end(
           JSON.stringify({
-            message: "Not Found"
+            message: "Not Found",
           })
         );
         break;
@@ -44,7 +45,7 @@ async function handle(req, res) {
     console.error(e.stack);
     res.writeHead(500).end(
       JSON.stringify({
-        message: "Something went wrong"
+        message: "Something went wrong",
       })
     );
   }
@@ -58,13 +59,13 @@ async function searchOrgs(queryParams) {
     index: "org",
     body: {
       size: limit != null ? limit : 10,
-      from: offset != null ? offset : 0
-    }
+      from: offset != null ? offset : 0,
+    },
   });
 
   return {
-    hits: response.body.hits.hits.map(h => h._source),
-    total: response.body.hits.total.value
+    hits: response.body.hits.hits.map((h) => h._source),
+    total: response.body.hits.total.value,
   };
 }
 
@@ -76,12 +77,12 @@ async function searchFundings(queryParams) {
     index: "funding",
     body: {
       size: limit != null ? limit : 10,
-      from: offset != null ? offset : 0
-    }
+      from: offset != null ? offset : 0,
+    },
   });
 
   return {
-    hits: response.body.hits.hits.map(h => h._source),
-    total: response.body.hits.total.value
+    hits: response.body.hits.hits.map((h) => h._source),
+    total: response.body.hits.total.value,
   };
 }

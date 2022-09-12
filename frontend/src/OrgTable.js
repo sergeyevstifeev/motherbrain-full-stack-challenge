@@ -10,7 +10,7 @@ export default function OrgTable() {
     url.searchParams.set("offset", 0);
 
     fetch(url)
-      .then(response => response.json())
+      .then((response) => response.json())
       .then(({ results: { hits } }) => {
         setOrgs(hits);
         setIsLoading(false);
@@ -30,7 +30,7 @@ export default function OrgTable() {
       </thead>
 
       <tbody>
-        {orgs.map(org => (
+        {orgs.map((org) => (
           <tr key={org.uuid}>
             <td>{org.company_name}</td>
           </tr>
