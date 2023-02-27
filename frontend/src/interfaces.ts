@@ -10,3 +10,13 @@ export interface Org {
   funding_total_usd: string;
   employee_count: string;
 }
+
+export interface Funding {
+  funding_round_uuid: string;
+  company_uuid: string;
+  company_name: string;
+  investment_type: string;
+  announced_on: string;
+  raised_amount_usd: string;
+  investor_names: string;
+}

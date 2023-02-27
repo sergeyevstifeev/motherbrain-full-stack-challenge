@@ -1,9 +1,9 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom/client';
-import App from './App';
+import FundingRoundsForSearch from './molecules/FundingRoundsForSearch';
 
 ReactDOM.createRoot(document.querySelector("#root")!).render(
   <React.StrictMode>
-    <App />
+    <FundingRoundsForSearch />
   </React.StrictMode>
 );

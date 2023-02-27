@@ -72,12 +72,25 @@ async function searchOrgs(queryParams) {
 async function searchFundings(queryParams) {
   const limit = queryParams.get("limit");
   const offset = queryParams.get("offset");
+  const q = queryParams.get("q");
 
   const response = await client.search({
     index: "funding",
     body: {
       size: limit != null ? limit : 10,
       from: offset != null ? offset : 0,
+      query: {
+        match_phrase: {
+          company_name: q
+        }
+      },
+      aggs: {
+        by_company_name: {
+          terms: {
+            field: "company_uuid"
+          }
+        }
+      },
     },
   });
 
