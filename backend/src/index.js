@@ -77,25 +77,41 @@ async function searchFundings(queryParams) {
   const response = await client.search({
     index: "funding",
     body: {
-      size: limit != null ? limit : 10,
-      from: offset != null ? offset : 0,
+      "size": 0,
       query: {
         match_phrase: {
           company_name: q
         }
       },
       aggs: {
-        by_company_name: {
+        company_name: {
           terms: {
-            field: "company_uuid"
+            field: "company_uuid",
+            order: {
+              _count: "desc"
+            }
+          },
+          aggs: {
+            fundings_over_time: {
+              date_histogram: {
+                field: "announced_on",
+                calendar_interval: "month",
+                min_doc_count: 1
+              },
+              aggs: {
+                top_funding_hits: {
+                  top_hits: {}
+                }
+              }
+            }
           }
         }
-      },
+      }
     },
   });
 
   return {
-    hits: response.body.hits.hits.map((h) => h._source),
+    hits: response.body,
     total: response.body.hits.total.value,
   };
 }
