@@ -1,17 +1,19 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
+import { Org } from "./interfaces";
 
 export default function OrgTable() {
   const [isLoading, setIsLoading] = useState(true);
-  const [orgs, setOrgs] = useState([]);
+  const [orgs, setOrgs] = useState<Org[]>([]);
 
   useEffect(() => {
     const url = new URL("http://localhost:8080/orgs");
-    url.searchParams.set("limit", 20);
-    url.searchParams.set("offset", 0);
+    url.searchParams.set("limit", String(20));
+    url.searchParams.set("offset", String(0));
 
     fetch(url)
       .then((response) => response.json())
-      .then(({ results: { hits } }) => {
+      .then((responseJson) => {
+        const hits: Org[] = responseJson.results.hits;
         setOrgs(hits);
         setIsLoading(false);
       });
