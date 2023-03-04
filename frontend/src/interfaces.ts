@@ -20,3 +20,12 @@ export interface Funding {
   raised_amount_usd: string;
   investor_names: string;
 }
+
+export interface TooltipContext {
+  x: string;
+  y: number;
+  company_name: string;
+  investment_type: string;
+  raised_amount_usd: number | null;
+  investor_names: string;
+}

@@ -6,9 +6,21 @@ import autocolors from 'chartjs-plugin-autocolors';
 import React, { useEffect, useState } from "react";
 import { Scatter } from 'react-chartjs-2';
 import { scatterChartData } from "../chartConverter";
-import { Funding } from "../interfaces";
+import { Funding, TooltipContext } from "../interfaces";
 
 ChartJS.register(LinearScale, PointElement, LineElement, Tooltip, Legend, TimeScale, autocolors);
+
+const usdFormatter = new Intl.NumberFormat('en-US', {
+  style: 'currency',
+  currency: 'USD',
+  maximumFractionDigits: 0,
+});
+
+function formatTooltipLabel(context: TooltipContext) {
+  const amountString = context.raised_amount_usd ? usdFormatter.format(context.raised_amount_usd) : 'Unknown amount';
+  const investorsString = context.investor_names !== "{}" ? ` by ${context.investor_names.replace(/{|}|"/g, '')}` : '';
+  return `${amountString} ${context.investment_type} round${investorsString}`;
+}
 
 function ScatterChart(fundings: Funding[]) {
     return <Scatter
@@ -17,7 +29,24 @@ function ScatterChart(fundings: Funding[]) {
                 plugins: {
                   legend: {
                     position: 'right',
+                    labels: {
+                      font: {
+                        size: 16,
+                      }
+                    }
                   },
+                  tooltip: {
+                    callbacks: {
+                      title: function (context) {
+                        const itemContext = context[0].raw as TooltipContext;
+                        return itemContext.company_name;
+                      },
+                      label: function (context) {
+                        const itemContext = context.raw as TooltipContext;
+                        return formatTooltipLabel(itemContext);
+                      }
+                    }
+                  }
                 },
                 scales: {
                   x: {
@@ -27,7 +56,7 @@ function ScatterChart(fundings: Funding[]) {
                   y: {
                     beginAtZero: true,
                   },
-                },
+                }
               }}
               data={{
                 datasets: scatterChartData(fundings)
@@ -35,9 +64,9 @@ function ScatterChart(fundings: Funding[]) {
             />;
 }
 
-export default function FundingRoundsForSearch() {
+export default function FundingRoundsByKeyword() {
   const [isLoading, setIsLoading] = useState(true);
-  const [searchTerm, setSearchTerm] = useState("Test");
+  const [searchTerm, setSearchTerm] = useState("finance");
   const [fundings, setFundings] = useState<Funding[]>([]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -47,7 +76,7 @@ export default function FundingRoundsForSearch() {
   useEffect(() => {
     setIsLoading(true);
     const url = new URL("http://localhost:8080/fundings");
-    url.searchParams.set("limit", String(20));
+    url.searchParams.set("limit", String(50));
     url.searchParams.set("offset", String(0));
     url.searchParams.set("q", searchTerm);
 
