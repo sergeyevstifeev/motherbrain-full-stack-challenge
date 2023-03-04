@@ -28,4 +28,5 @@ export interface TooltipContext {
   investment_type: string;
   raised_amount_usd: number | null;
   investor_names: string;
+  company_uuid: string;
 }

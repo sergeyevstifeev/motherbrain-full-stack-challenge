@@ -52,32 +52,38 @@ async function handle(req, res) {
 }
 
 async function searchOrgs(queryParams) {
-  const limit = queryParams.get("limit");
-  const offset = queryParams.get("offset");
+  const q = queryParams.get("q");
 
   const response = await client.search({
     index: "org",
     body: {
-      size: limit != null ? limit : 10,
-      from: offset != null ? offset : 0,
+      size: 1000,
+      query: {
+        match_phrase: {
+          company_name: q
+        }
+      },
     },
   });
 
+  const hits = {};
+  response.body.hits.hits.forEach((h) => {
+    hits[h._source.uuid] = h._source;
+  });
+
   return {
-    hits: response.body.hits.hits.map((h) => h._source),
+    hits,
     total: response.body.hits.total.value,
   };
 }
 
 async function searchFundings(queryParams) {
-  const limit = queryParams.get("limit");
-  const offset = queryParams.get("offset");
   const q = queryParams.get("q");
 
   const response = await client.search({
     index: "funding",
     body: {
-      "size": 0,
+      size: 0, // only include aggregations
       query: {
         match_phrase: {
           company_name: q
@@ -87,9 +93,9 @@ async function searchFundings(queryParams) {
         company_name: {
           terms: {
             field: "company_uuid",
-            order: {
-              _count: "desc"
-            }
+            // Would be nice to have raised_amount_usd as numeric in the mapping (currently it's a keyword),
+            // it would be possible to sort by round size then.
+            size: 100
           },
           aggs: {
             fundings_over_time: {
@@ -100,7 +106,9 @@ async function searchFundings(queryParams) {
               },
               aggs: {
                 top_funding_hits: {
-                  top_hits: {}
+                  top_hits: {
+                    size: 100
+                  }
                 }
               }
             }

@@ -17,6 +17,7 @@ export function scatterChartData(fundings) {
           investment_type: fundingData.investment_type,
           raised_amount_usd: fundingData.raised_amount_usd,
           investor_names: fundingData.investor_names,
+          company_uuid: fundingData.company_uuid,
         };
       }),
     };

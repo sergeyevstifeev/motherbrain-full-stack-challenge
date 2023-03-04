@@ -1,6 +1,6 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom/client';
-import FundingRoundsForSearch from './molecules/FundingRoundsForSearch';
+import FundingRoundsByKeyword from './FundingRoundsByKeyword';
 
 ReactDOM.createRoot(document.querySelector("#root")!).render(
   <React.StrictMode>
