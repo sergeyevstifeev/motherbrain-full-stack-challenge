@@ -1,9 +1,10 @@
-import * as React from 'react';
-import * as ReactDOM from 'react-dom/client';
-import FundingRoundsByKeyword from './FundingRoundsByKeyword';
+import * as React from 'react'
+import * as ReactDOM from 'react-dom/client'
+import FundingRoundsByKeyword from './FundingRoundsByKeyword'
 
-ReactDOM.createRoot(document.querySelector("#root")!).render(
-  <React.StrictMode>
-    <FundingRoundsForSearch />
-  </React.StrictMode>
-);
+const root = document.querySelector('#root')
+if (root) {
+  ReactDOM.createRoot(root).render(
+    <FundingRoundsByKeyword />
+  )
+}
