@@ -2,12 +2,12 @@ import React, { useEffect, useState } from 'react'
 import { type FundingsResponse, type OrgsResponse } from './interfaces'
 import ScatterChart from './ScatterChart'
 
-interface EsDataProviders {
-  fundingsProvider: (string) => Promise<FundingsResponse>
-  orgsProvider: (string) => Promise<OrgsResponse>
+interface DataProviders {
+  fundingsProvider: (searchTerm: string) => Promise<FundingsResponse>
+  orgsProvider: (searchTerm: string) => Promise<OrgsResponse>
 }
 
-export default function FundingRoundsByKeyword (props: EsDataProviders): JSX.Element {
+export default function FundingRoundsByKeyword (props: DataProviders): JSX.Element {
   const [isLoading, setIsLoading] = useState(true)
   const [searchTerm, setSearchTerm] = useState('finance') // default search term for demo purposes
   const [fundings, setFundings] = useState<FundingsResponse | null>(null)
