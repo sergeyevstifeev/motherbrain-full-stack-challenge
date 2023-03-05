@@ -66,6 +66,7 @@ async function searchOrgs(queryParams) {
     },
   });
 
+  // Convert hits to a map for easier access on the frontend
   const hits = {};
   response.body.hits.hits.forEach((h) => {
     hits[h._source.uuid] = h._source;
@@ -94,7 +95,7 @@ async function searchFundings(queryParams) {
           terms: {
             field: "company_uuid",
             // Would be nice to have raised_amount_usd as numeric in the mapping (currently it's a keyword),
-            // it would be possible to sort by round size then.
+            // it would be possible to sort by round size then or compute total amount raised by company.
             size: 100
           },
           aggs: {
