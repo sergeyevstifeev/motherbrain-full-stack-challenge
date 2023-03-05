@@ -8,7 +8,7 @@ const mockData = {
           fundings_over_time: {
             buckets: [
               {
-                key_as_string: '2015-02-01T00:00:00.000Z',
+                key_as_string: '2015-03-01T00:00:00.000Z',
                 top_funding_hits: {
                   hits: {
                     hits: [
@@ -16,9 +16,51 @@ const mockData = {
                         _source: {
                           company_name: 'company_name1',
                           investment_type: 'investment_type1',
-                          raised_amount_usd: 1234,
+                          raised_amount_usd: 7777,
                           investor_names: '{investor_name,investor_name2}',
                           company_uuid: 'bbf5972f-7661-453c-c008-dbc46c8a405b'
+                        }
+                      }
+                    ]
+                  }
+                }
+              },
+              {
+                key_as_string: '2016-01-01T00:00:00.000Z',
+                top_funding_hits: {
+                  hits: {
+                    hits: [
+                      {
+                        _source: {
+                          company_name: 'company_name1',
+                          investment_type: 'investment_type2',
+                          raised_amount_usd: 8888,
+                          investor_names: '{investor_name3,investor_name4}',
+                          company_uuid: 'bbf5972f-7661-453c-c008-dbc46c8a405b'
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            ]
+          }
+        },
+        {
+          fundings_over_time: {
+            buckets: [
+              {
+                key_as_string: '2015-02-01T00:00:00.000Z',
+                top_funding_hits: {
+                  hits: {
+                    hits: [
+                      {
+                        _source: {
+                          company_name: 'company_name2',
+                          investment_type: 'investment_type1',
+                          raised_amount_usd: 1234,
+                          investor_names: '{investor_name,investor_name2}',
+                          company_uuid: 'cc47f157-9f73-31f4-499d-58dc350147ac'
                         }
                       }
                     ]
@@ -59,6 +101,29 @@ test('converts correctly', () => {
         {
           company_name: 'company_name1',
           company_uuid: 'bbf5972f-7661-453c-c008-dbc46c8a405b',
+          investment_type: 'investment_type1',
+          investor_names: '{investor_name,investor_name2}',
+          raised_amount_usd: 7777,
+          x: '2015-03-01T00:00:00.000Z',
+          y: 7777
+        },
+        {
+          company_name: 'company_name1',
+          company_uuid: 'bbf5972f-7661-453c-c008-dbc46c8a405b',
+          investment_type: 'investment_type2',
+          investor_names: '{investor_name3,investor_name4}',
+          raised_amount_usd: 8888,
+          x: '2016-01-01T00:00:00.000Z',
+          y: 8888
+        }
+      ]
+    },
+    {
+      label: 'company_name2',
+      data: [
+        {
+          company_name: 'company_name2',
+          company_uuid: 'cc47f157-9f73-31f4-499d-58dc350147ac',
           investment_type: 'investment_type1',
           investor_names: '{investor_name,investor_name2}',
           raised_amount_usd: 1234,

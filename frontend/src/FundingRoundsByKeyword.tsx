@@ -30,12 +30,15 @@ export default function FundingRoundsByKeyword (props: EsDataProviders): JSX.Ele
     ]).then(() => {
       setIsLoading(false)
     }).catch((e) => {
+      // Better error handling would be nice.
       console.error(e)
     })
   }, [searchTerm])
 
   const Chart: React.FC = () => isLoading
     ? <div>Loading</div>
+    // @ts-expect-error: Object is possibly 'null'.
+    // At this point fundings and orgs should be set.
     : <ScatterChart fundings={fundings} orgs={orgs} />
 
   return (

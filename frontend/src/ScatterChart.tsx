@@ -6,7 +6,7 @@ import autocolors from 'chartjs-plugin-autocolors'
 import React from 'react'
 import { Scatter } from 'react-chartjs-2'
 import { scatterChartData } from './chartConverter'
-import { type TooltipContext } from './interfaces'
+import { type FundingsResponse, type OrgsResponse, type TooltipContext } from './interfaces'
 
 ChartJS.register(LinearScale, PointElement, LineElement, Tooltip, Legend, TimeScale, autocolors)
 
@@ -22,7 +22,12 @@ function formatTooltipLabel (context: TooltipContext): string {
   return `${amountString} ${context.investment_type} round${investorsString}`
 }
 
-export default function ScatterChart ({ fundings, orgs }): JSX.Element {
+interface ScatterChartProps {
+  fundings: FundingsResponse
+  orgs: OrgsResponse
+}
+
+export default function ScatterChart ({ fundings, orgs }: ScatterChartProps): JSX.Element {
   return <Scatter
     options={{
       responsive: true,

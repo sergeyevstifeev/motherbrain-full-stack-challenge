@@ -40,7 +40,7 @@ export interface FundingsResponse {
   }
 }
 
-export type OrgsResponse = Map<string, Org>
+export type OrgsResponse = Record<string, Org>
 
 export interface TooltipContext {
   x: string
