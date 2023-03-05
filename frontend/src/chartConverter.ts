@@ -1,6 +1,6 @@
-import { type TooltipContext } from './interfaces'
+import { type Funding, type FundingsResponse, type TooltipContext } from './interfaces'
 
-export function scatterChartData (fundings): Array<{ label: string, data: TooltipContext[] }> {
+export function scatterChartData (fundings: FundingsResponse): Array<{ label: string, data: TooltipContext[] }> {
   const buckets = fundings.aggregations.company_name.buckets
   const data = buckets.map((bucket) => {
     const bucketKey = bucket.fundings_over_time.buckets[0].top_funding_hits.hits.hits[0]._source.company_name
@@ -8,7 +8,7 @@ export function scatterChartData (fundings): Array<{ label: string, data: Toolti
     return {
       label: bucketKey,
       data: fundingsOverTime.map((funding): TooltipContext => {
-        const fundingData = funding.top_funding_hits.hits.hits[0]._source
+        const fundingData: Funding = funding.top_funding_hits.hits.hits[0]._source
 
         return {
           x: funding.key_as_string,

@@ -16,7 +16,7 @@ const mockData = {
                         _source: {
                           company_name: 'company_name1',
                           investment_type: 'investment_type1',
-                          raised_amount_usd: 'raised_amount_usd1',
+                          raised_amount_usd: 1234,
                           investor_names: '{investor_name,investor_name2}',
                           company_uuid: 'bbf5972f-7661-453c-c008-dbc46c8a405b'
                         }
@@ -34,7 +34,7 @@ const mockData = {
                         _source: {
                           company_name: 'company_name2',
                           investment_type: 'investment_type2',
-                          raised_amount_usd: 'raised_amount_usd2',
+                          raised_amount_usd: 5678,
                           investor_names: '{investor_name3,investor_name4}',
                           company_uuid: 'cc47f157-9f73-31f4-499d-58dc350147ac'
                         }
@@ -61,18 +61,18 @@ test('converts correctly', () => {
           company_uuid: 'bbf5972f-7661-453c-c008-dbc46c8a405b',
           investment_type: 'investment_type1',
           investor_names: '{investor_name,investor_name2}',
-          raised_amount_usd: 'raised_amount_usd1',
+          raised_amount_usd: 1234,
           x: '2015-02-01T00:00:00.000Z',
-          y: 'raised_amount_usd1'
+          y: 1234
         },
         {
           company_name: 'company_name2',
           company_uuid: 'cc47f157-9f73-31f4-499d-58dc350147ac',
           investment_type: 'investment_type2',
           investor_names: '{investor_name3,investor_name4}',
-          raised_amount_usd: 'raised_amount_usd2',
+          raised_amount_usd: 5678,
           x: '2016-02-01T00:00:00.000Z',
-          y: 'raised_amount_usd2'
+          y: 5678
         }
       ]
     }

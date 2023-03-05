@@ -12,14 +12,35 @@ export interface Org {
 }
 
 export interface Funding {
-  funding_round_uuid: string
   company_uuid: string
   company_name: string
   investment_type: string
-  announced_on: string
-  raised_amount_usd: string
+  raised_amount_usd: number
   investor_names: string
 }
+
+export interface FundingsResponse {
+  aggregations: {
+    company_name: {
+      buckets: Array<{
+        fundings_over_time: {
+          buckets: Array<{
+            key_as_string: string
+            top_funding_hits: {
+              hits: {
+                hits: Array<{
+                  _source: Funding
+                }>
+              }
+            }
+          }>
+        }
+      }>
+    }
+  }
+}
+
+export type OrgsResponse = Map<string, Org>
 
 export interface TooltipContext {
   x: string

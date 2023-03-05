@@ -1,11 +1,17 @@
 import React, { useEffect, useState } from 'react'
+import { type FundingsResponse, type OrgsResponse } from './interfaces'
 import ScatterChart from './ScatterChart'
 
-export default function FundingRoundsByKeyword (): JSX.Element {
+interface EsDataProviders {
+  fundingsProvider: (string) => Promise<FundingsResponse>
+  orgsProvider: (string) => Promise<OrgsResponse>
+}
+
+export default function FundingRoundsByKeyword (props: EsDataProviders): JSX.Element {
   const [isLoading, setIsLoading] = useState(true)
-  const [searchTerm, setSearchTerm] = useState('finance')
-  const [fundings, setFundings] = useState([])
-  const [orgs, setOrgs] = useState([])
+  const [searchTerm, setSearchTerm] = useState('finance') // default search term for demo purposes
+  const [fundings, setFundings] = useState<FundingsResponse | null>(null)
+  const [orgs, setOrgs] = useState<OrgsResponse | null>(null)
 
   function handleChange (e: React.ChangeEvent<HTMLInputElement>): void {
     setSearchTerm(e.target.value)
@@ -15,18 +21,12 @@ export default function FundingRoundsByKeyword (): JSX.Element {
     setIsLoading(true)
 
     Promise.all([
-      fetch(new URL(`http://localhost:8080/fundings?q=${searchTerm}`))
-        .then(async (response) => await response.json())
-        .then((responseJson) => {
-          const hits = responseJson.results.hits
-          setFundings(hits)
-        }),
-      fetch(new URL(`http://localhost:8080/orgs?q=${searchTerm}`))
-        .then(async (response) => await response.json())
-        .then((responseJson) => {
-          const hits = responseJson.results.hits
-          setOrgs(hits)
-        })
+      props.fundingsProvider(searchTerm).then((fundings) => {
+        setFundings(fundings)
+      }),
+      props.orgsProvider(searchTerm).then((orgs) => {
+        setOrgs(orgs)
+      })
     ]).then(() => {
       setIsLoading(false)
     }).catch((e) => {
@@ -39,14 +39,15 @@ export default function FundingRoundsByKeyword (): JSX.Element {
     : <ScatterChart fundings={fundings} orgs={orgs} />
 
   return (
-    <div style={{ margin: 10, display: 'flex', flexDirection: 'column' }}>
-      <h1>Funding Rounds By Keyword</h1>
-      <div style={{ marginBottom: 20 }}>
-        <input type="search" onChange={handleChange} value={searchTerm}></input>
+      <div style={{ margin: 10, display: 'flex', flexDirection: 'column' }}>
+        <h1>Funding Rounds By Keyword</h1>
+        <p>The chart shows funding rounds for companies with the specified keyword as part of the name.</p>
+        <div style={{ marginBottom: 20 }}>
+          <input type="search" onChange={handleChange} value={searchTerm}></input>
+        </div>
+        <div style={{ width: '80%' }}>
+          <Chart />
+        </div>
       </div>
-      <div style={{ width: '80%' }}>
-        <Chart />
-      </div>
-    </div>
   )
 }
